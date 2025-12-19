@@ -30,12 +30,14 @@
 
 #pagebreak()
 
-#include "./iam.typ"
+#include "./chapters/iam/index.typ"
 #pagebreak()
-#include "./sts.typ"
+#include "./chapters/sts/index.typ"
 #pagebreak()
-#include "./ram.typ"
+#include "./chapters/ram/index.typ"
 #pagebreak()
-#include "./service-quota.typ"
+#include "./chapters/service-quotas/index.typ"
 #pagebreak()
-#include "./virtualization.typ"
+#include "./chapters/virtualization/index.typ"
+#pagebreak()
+#include "./chapters/orginizations/index.typ"
