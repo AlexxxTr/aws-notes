@@ -156,7 +156,7 @@ AD connectery requires 2 subnets within a VPC, each in a different AZ. It requir
 
 #warning[
   This requires a *working* network connection for this to keep working.
-  If this is not working, it will be imposseble to access services which require the AD authentication.
+  If this is not working, it will be impossible to access services which require the AD authentication.
 ]
 
 The network connectivity either runs through a Direct Connect or through a site-to-site VPN.

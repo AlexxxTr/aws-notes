@@ -68,3 +68,61 @@ In a stateless firewall, it is also important to consider the direction of the r
 #figure(image("./images/vpc-stateless-firewall.png"), caption: [VPC; Stateless firewall])
 
 #figure(image("./images/vpc-stateful-firewall.png"), caption: [VPC; Stateful firewall])
+
+=== Network Access Control Lists (NACL)
+
+NACL's filter traffic crossing the subnet boundary, so any incoming or outgoing traffic.
+Connections within the subnet are not affected by this however, they can move freely.
+Boundary can be seen as the edge of the subnet, where traffic LEAVES or ENTERS.
+
+A NACL has two group of rules, inbound and outbound rule. 
+These rules only take effect on the direction of the connection, it does not make a distinction on whether it's a request or reponse.
+This means that it is a stateless firewall.
+
+Rules must match the destination IP/port and protocol, they should *allow/deny* traffic based on if it matches that rule.
+Rules are matched in order, the lowest number comes first. Once it has found a match, the processing stops.
+If no rule is found, it falls back to the default (`*`) rule, which is an implicit deny.
+
+#note[
+  NACL rules can not refer to logical resources, only CIDR ranges, port and protocols.
+
+  NACLS itself can also not be associated with logical resources, only subnets.
+
+  A subnet can have only one NACL associated with itself.
+]
+
+#figure(image("./images/vpc-nacl.png"), caption: [VPC; NACL Architecture])
+
+#warning[
+  Each VPC has a default NACL, which has two inbound and two outbound rules.
+  This comes down to a catch-all where *all* traffic is allowed.
+
+  This means by default, NACL's don't do anything; it has been designed this way to be beginner friendly.
+
+  NACL's can be created for a specific VPC and are by default not associated with any subnet.
+  They also DENY all traffic by default.
+]
+
+#note[AWS does not recommend the use of NACL's and prefers the use of security groups.]
+
+=== Security Groups (SG)
+
+Security groups are a stateful firewall, they are aware of the response to a certain request.
+This means that if a request is allowed, then the response is automatically allowed as well, with the correct IP/port and protocol.
+
+A major downside with SG is that there is not explicit deny, it's only possible for explicit allows or implicit deny.
+This means that you are not able to block a back actor using security groups, a NACL would be needed for this.
+
+The major advantage that SG have, is that they support logical resources, next to IP and CIRD ranges.
+With this, it's possible to refer to other security groups and it is even possible that a SG refers to itself.
+
+#tip[
+  Security Groups are connected to Elastic Network Interfaces (ENI's), they are not connected to instances.
+  It might appear that way in the console UI, but in reality it is not the case.
+]
+
+#figure(image("./images/vpc-sg-basic.png"), caption: [VPC; SG Basic Architecture])
+
+#figure(image("./images/vpc-sg-w-logical-ref.png"), caption: [VPC; SG Architecture w/ logical ref])
+
+#figure(image("./images/vpc-sg-w-self-ref.png"), caption: [VPC; SG Architecture w/ self ref])
